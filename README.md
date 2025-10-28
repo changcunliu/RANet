@@ -119,4 +119,5 @@ Then, you can obtain similar evaluation results reported in our manuscript.
 ## Additional Information
 - All experiments were implemented in PyTorch with an NVIDIA GeForce RTX 3090 Ti GPU.
 - Before training, it is necessary to ensure that the GPU has at least 20 GB of available memory.
+- Before testing, it is necessary to ensure that the GPU has at least 7 GB of available memory.
 - The remaining key information is still being uploaded.
