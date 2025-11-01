@@ -34,12 +34,9 @@ from logger import create_logger
 
 parser = argparse.ArgumentParser(description='Process some paths.')
 parser.add_argument('--detector_path', type=str, 
-                    # default='/home/changcun/my/DeepfakeBench/training/config/detector/resnet34.yaml',
-                    # default='/home/changcun/my/DeepfakeBench/training/config/detector/ucf.yaml'
                     help='path to detector YAML file')
 parser.add_argument("--test_dataset", nargs="+")
 parser.add_argument('--weights_path', type=str, 
-                    # default='/mntcephfs/lab_data/zhiyuanyan/benchmark_results/auc_draw/cnn_aug/resnet34_2023-05-20-16-57-22/test/FaceForensics++/ckpt_epoch_9_best.pth')
                     default='/scratch/changcun/dataset/DeepfakeBench/training/weights/xception_best.pth')
 #parser.add_argument("--lmdb", action='store_true', default=False)
 args = parser.parse_args()
@@ -110,31 +107,26 @@ def test_one_dataset(model, data_loader):
         prediction_lists += list(predictions['prob'].cpu().detach().numpy())
         feature_lists += list(predictions['feat'].cpu().detach().numpy())
 
-        # 可视化 `data_dict['data']` 中的所有数据
         if "data" in data_dict:
             for data_item_path, data_item in zip(data_dict["data_path"], data_dict["data"]):
-                dataset_name = os.path.basename(os.path.dirname(data_item_path))  # 提取数据集名称
-                data_name = os.path.basename(data_item_path).split('.')[0]  # 提取文件名
-                save_name = f"{dataset_name}_{data_name}_vis.jpg"  # 自定义保存文件名
-                save_dir = os.path.join(os.path.dirname("/home/changcun/myself/DeepfakeBench_changcun/keshihua"), "vis")  # 自定义保存目录
+                dataset_name = os.path.basename(os.path.dirname(data_item_path))
+                data_name = os.path.basename(data_item_path).split('.')[0]
+                save_name = f"{dataset_name}_{data_name}_vis.jpg"
+                save_dir = os.path.join(os.path.dirname("/home/changcun/myself/DeepfakeBench_changcun/keshihua"), "vis")
                 save_path = os.path.join(save_dir, save_name)
 
 
-                # 可视化逻辑
-                data_item_np = data_item.permute(1, 2, 0).cpu().numpy()  # 假设 [C, H, W]，转为 [H, W, C]
-                data_item_np = (data_item_np - data_item_np.min()) / (data_item_np.max() - data_item_np.min())  # 归一化
-                data_item_np = (data_item_np * 255).astype(np.uint8)  # 转为 uint8
+                data_item_np = data_item.permute(1, 2, 0).cpu().numpy()
+                data_item_np = (data_item_np - data_item_np.min()) / (data_item_np.max() - data_item_np.min())
+                data_item_np = (data_item_np * 255).astype(np.uint8)
 
-                # 获取特征图并生成热图
-                heatmap = predictions['feat'][0].mean(dim=0).cpu().detach().numpy()  # 假设特征是 [C, H, W]
-                heatmap = (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min())  # 归一化到 [0, 1]
-                heatmap = (heatmap * 255).astype(np.uint8)  # 转为 [0, 255]
-                heatmap = cv2.resize(heatmap, (data_item_np.shape[1], data_item_np.shape[0]))  # 调整热图大小
+                heatmap = predictions['feat'][0].mean(dim=0).cpu().detach().numpy()
+                heatmap = (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min())
+                heatmap = (heatmap * 255).astype(np.uint8)
+                heatmap = cv2.resize(heatmap, (data_item_np.shape[1], data_item_np.shape[0]))
 
-                # 混合图像和热图
                 blended_image = cv2.addWeighted(data_item_np, 0.6, cv2.applyColorMap(heatmap, cv2.COLORMAP_JET), 0.4, 0)
 
-                # 保存可视化结果
                 pil_image.fromarray(blended_image).save(save_path)
                 print(f"Visualization saved at: {save_path}")
     
