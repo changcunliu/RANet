@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class HierarchicalAttention(nn.Module):
+class MultiScaleAttention(nn.Module):
     def __init__(self, channels, levels=[2, 3, 6], detail_level=8):
         super().__init__()
         self.levels = levels
@@ -23,7 +23,7 @@ class HierarchicalAttention(nn.Module):
                 nn.Sigmoid()
             ) for scale in levels
         ])
-        self.detail_att = nn.Sequential(
+        self.detail_enhance = nn.Sequential(
             nn.Conv2d(channels, channels, 3, padding=1, groups=channels),
             nn.ReLU(),
             nn.Conv2d(channels, channels, 1),
@@ -40,5 +40,5 @@ class HierarchicalAttention(nn.Module):
             feat_up = F.interpolate(feat, size=(H, W), mode='bilinear', align_corners=False)
             local_weights.append(feat_up)
         local_att_map = torch.mean(torch.stack(local_weights), dim=0)
-        detail_att_map = self.detail_att(x)
-        return x * (global_att_map + local_att_map + detail_att_map)
+        detail_enhance_map = self.detail_enhance(x)
+        return x * (global_att_map + local_att_map + detail_enhance_map)
