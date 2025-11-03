@@ -7,7 +7,7 @@ import torch
 from transformers import CLIPModel
 from detectors import DETECTOR
 from training.networks.DRA import DynamicRankProjection
-from training.networks.MSA import HierarchicalAttention
+from training.networks.MSA import MultiScaleAttention
 
 logger = logging.getLogger(__name__)
 
