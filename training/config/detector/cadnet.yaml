@@ -1,9 +1,7 @@
-# 2025年5月26日16点53分
-# log dir 
-log_dir: ./logs/cadnet
+log_dir: ./logs/ranet
 
 # model setting
-pretrained: 'no need to provide this for the cadnet model'
+pretrained: 'no need to provide this for the ranet model'
 model_name: cadnet
 backbone_name: vit
 
