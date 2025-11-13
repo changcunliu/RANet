@@ -45,7 +45,7 @@ sh install.sh
 ### 2. Download checkpoints
 If you are a deepfake player, more interested in face deepfake detection:
 - The checkpoint of "CLIP-L14 + our CADNet" **training on FaceForensics++ (FF++)** are released at [Google Drive](https://drive.google.com/drive/folders/1Km03VoGyfrM6v6LJqTLtv6GGwz2-kiWQ).
-- The above checkpoints are only applicable for the testing of the Celeb-DF-v1 dataset. The remaining checkpoints will be gradually uploaded in the future. 
+- The above checkpoints are applicable for the testing of the Celeb-DF-v1/v2, DFDCP, and FaceShifter datasets. The remaining checkpoints will be gradually uploaded in the future. Welcome everyone to use them. 
 
 ### 3. Run
 You can then infer the Celeb-DF-v1 dataset using the pretrained weights. 
