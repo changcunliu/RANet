@@ -120,4 +120,4 @@ Then, you can obtain similar evaluation results reported in our manuscript.
 - All experiments were implemented in PyTorch with an NVIDIA GeForce RTX 3090 Ti GPU.
 - Before training, it is necessary to ensure that the GPU has at least 20 GB of available memory.
 - Before testing, it is necessary to ensure that the GPU has at least 7 GB of available memory.
-- The remaining key information is still being uploaded.
+- The remaining key information is still being uploaded. This includes the module corresponding checkpoints, PCA code, visualization code, robustness code and training code. The training code will be made public after receiving it, while the remaining codes will be continuously updated. 
